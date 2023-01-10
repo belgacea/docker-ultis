@@ -24,7 +24,7 @@ RUN mkdir -p /kaniko/.docker && \
 
 # MAKE CONTAINER
 # --------------
-FROM alpine:3.16
+FROM alpine:3.17.1
 
 ARG JQ_RELEASE="1.6"
 ARG YQ_RELEASE="4.29.2"
