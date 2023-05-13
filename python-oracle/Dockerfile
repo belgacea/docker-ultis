@@ -1,27 +1,17 @@
-FROM python:3.9.15-slim-buster
+FROM python:3.11.3-slim
 
 RUN apt-get update && \
     apt-get upgrade -y && \
+    apt-get install -y --fix-broken --fix-missing  \
+      sudo bash bash-completion less git vim htop screen \
+      wget util-linux mount bsdutils  \
+      build-essential gcc g++ cmake valgrind gdb emacs  \
+      libsasl2-dev libsasl2-2 libsasl2-modules-gssapi-mit && \
     apt-get clean -y && \
     apt-get autoremove -y && \
     apt-get autoclean -y && \
     rm -rf /tmp/* && \
     rm -rf /var/lib/apt/lists/*
-
-# Overwrite sh with bash
-RUN mv /bin/sh /bin/sh_tmp && ln -s /bin/bash /bin/sh
-
-# Utils
-RUN apt-get install -y --fix-broken --fix-missing sudo git vim wget util-linux mount bsdutils htop screen
-# bash-completion less
-# ftp ncftp doxygen graphviz software-properties-common libopenblas-dev liblapack-dev
-
-# C++
-RUN apt-get install -y --fix-broken --fix-missing sudo build-essential gcc g++ cmake valgrind gdb emacs
-# doxygen graphviz software-properties-common libopenblas-dev liblapack-dev
-
-# SASL
-RUN apt-get install -y --fix-broken --fix-missing libsasl2-dev libsasl2-2 libsasl2-modules-gssapi-mit
 
 # Installing Oracle instant client
 WORKDIR /opt/oracle
@@ -34,12 +24,16 @@ RUN apt-get update && apt-get install -y libaio1 unzip \
   && echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf \
   && ldconfig
 
-# TODO install oracle client lib
-#ENV LD_LIBRARY_PATH=
+# Overwrite sh with bash
+RUN mv /bin/sh /bin/sh_tmp && ln -s /bin/bash /bin/sh
+
+# Set oracle client lib path
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient
 
 # Restore sh
 # RUN rm /bin/sh && mv /bin/sh_tmp /bin/sh
 
+# TODO setup
 #ENV APP_PATH=/home/generator
 #RUN mkdir -p $APP_PATH
 #WORKDIR $APP_PATH
