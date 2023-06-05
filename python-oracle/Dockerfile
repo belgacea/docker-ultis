@@ -3,11 +3,11 @@ FROM python:3.10.11-slim
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y --fix-broken --fix-missing  \
+    apt-get install -y --fix-broken --fix-missing \
       sudo bash bash-completion less git vim htop screen \
-      wget util-linux mount bsdutils apt-file  \
-      build-essential gcc g++ cmake valgrind gdb emacs  \
-      libsasl2-dev libsasl2-2 libsasl2-modules-gssapi-mit && \
+      wget util-linux mount bsdutils apt-file \
+      build-essential gcc g++ cmake valgrind gdb emacs \
+      libsasl2-dev libsasl2-2 libsasl2-modules-gssapi-mit libkrb5-dev && \
     apt-file update && \
     apt-get clean -y && \
     apt-get autoremove -y && \
